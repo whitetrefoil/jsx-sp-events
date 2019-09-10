@@ -1,0 +1,78 @@
+{
+  "name": "@whitetrefoil/jsx-sp-events",
+  "version": "0.1.0",
+  "description": "A event helper because React decides to ban using of \"javascript:\"",
+  "keywords": [
+    "jsx",
+    "events"
+  ],
+  "main": "main.js",
+  "module": "main.module.js",
+  "scripts": {
+    "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
+    "build": "node scripts/build.js",
+    "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
+    "test": "jest --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whitetrefoil/jsx-sp-events.git"
+  },
+  "author": "WhiteTrefoil <whitetrefoil@gmail.com>",
+  "license": "Unlicense",
+  "directories": {
+    "test": "tests"
+  },
+  "engines": {
+    "node": ">=10.16.3"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.2",
+    "jest": "^24.9.0",
+    "preact": "^10.0.0-rc.1",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,js}",
+      "!**/*.d.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/~.*"
+    ],
+    "coverageDirectory": "test_results",
+    "coverageReporters": [
+      "clover",
+      "lcov",
+      "text-summary"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true,
+        "tsConfig": "tests/tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {},
+    "setupFiles": [],
+    "testRegex": "(/__tests__/.*|(\\.|/)spec)\\.[jt]sx?$",
+    "transform": {
+      ".ts": "ts-jest"
+    },
+    "preset": "ts-jest",
+    "testMatch": null
+  }
+}

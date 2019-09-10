@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "files"  : [
+    "preact.ts"
+  ],
+  "include": [
+    "declarations/*.d.ts"
+  ]
+}
