@@ -1,12 +1,17 @@
 {
   "name": "@whitetrefoil/jsx-sp-events",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A event helper because React decides to ban using of \"javascript:\"",
   "keywords": [
     "jsx",
     "events",
     "react",
     "preact"
+  ],
+  "files": [
+    "lib",
+    "src",
+    "tests"
   ],
   "source": "src/main.ts",
   "main": "lib/main.js",

@@ -62,6 +62,10 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 Changelog & Roadmap
 -------------------
 
+### v0.3.0
+
+* Remove unnecessary files from release.
+
 ### v0.2.0
 
 * No more `"@whitetrefoil/jsx-sp-events/preact" & "@whitetrefoil/jsx-sp-events/react"`,
