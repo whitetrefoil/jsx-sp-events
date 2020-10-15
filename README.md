@@ -1,7 +1,7 @@
 JSX SP Events (@whitetrefoil/jsx-sp-events)
 ==================================================
 
-A event helper because React decides to ban using of "javascript:".
+An event helper because React decides to ban using of "javascript:".
 
 "S" for "event.stopPropagation()", "P" for "event.preventDefault()".
 
@@ -11,19 +11,7 @@ Usage
 **IMPORTANT**: If your code isn't targeting the latest syntax spec of JS / ES,
 please use something like babel to transfer this library.
 
-### Typescript + Preact
-
-```tsx
-import { prevented, stopped, preventedAndStopped } from '@whitetrefoil/jsx-sp-events/preact';
-```
-
-### Typescript + React
-
-```tsx
-import { prevented, stopped, preventedAndStopped } from '@whitetrefoil/jsx-sp-events/react';
-```
-
-### Javascript
+### Typescript
 
 ```jsx
 import { prevented, stopped, preventedAndStopped } from '@whitetrefoil/jsx-sp-events';
@@ -33,7 +21,7 @@ const { prevented, stopped, preventedAndStopped } = require('@whitetrefoil/jsx-s
 
 ### Common
 
-```tsx
+```jsx
 export default () => {
     const dispatch = useDispatch();
     const onClick = () => dispatch(myAction());
@@ -44,7 +32,9 @@ export default () => {
 API
 ---
 
-### `prevented`
+### `prevented(eventOrHandler?)`
+
+Alias: `p`
 
 `onClick={prevented}` is same as `onClick={prevented()}` means
 `onClick={ev => ev.preventDefault()}`;
@@ -53,20 +43,32 @@ API
 ```
 onClick={ev => {
     ev.preventDefault();
-    myHandler(ev);
+    myHandler.call(ev.currentTarget, ev);
 }}
 ```
 
 ### `stopped`
 
+Alias: `s`
+
 Same as `prevented` but `ev.stopPropagation()` is called instead of `ev.preventDefault()`.
 
 ### `preventedAndStopped`
+
+Aliases: `stoppedAndPrevented`, `ps`, `sp`
 
 Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are called.
 
 Changelog & Roadmap
 -------------------
+
+### v0.2.0
+
+* No more `"@whitetrefoil/jsx-sp-events/preact" & "@whitetrefoil/jsx-sp-events/react"`,
+  only `"@whitetrefoil/jsx-sp-events"`.
+* Keep `this` context (as `ev.currentTarget`) for handlers passed-in.
+* Add some shorter aliases.
+* Infrastructure upgrades.
 
 ### v0.1.0
 

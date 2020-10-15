@@ -1,0 +1,22 @@
+{
+  "extends"        : "./tsconfig.json",
+  "compilerOptions": {
+    "inlineSourceMap": false,
+    "inlineSources"  : false,
+    "jsx"            : "react",
+    "module"         : "esnext",
+    "sourceMap"      : false,
+    "target"         : "esnext"
+  },
+  "include"        : [
+    "**/*.tsx",
+    "**/*.ts",
+    "**/*.jsx",
+    "**/*.js"
+  ],
+  "exclude"        : [
+    "**/node_modules",
+    "**/.*",
+    "**/~*"
+  ]
+}

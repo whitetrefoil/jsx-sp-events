@@ -1,9 +1,8 @@
 {
   "extends"        : "../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "../.building",
-    "target": "es2015"
+    "noEmit": true,
+    "outDir": "./.building"
   },
   "include"        : [
     "../declarations/**/*.d.ts",
