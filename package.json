@@ -13,17 +13,20 @@
     "src",
     "tests"
   ],
+  "type"  : "module",
   "source": "src/main.ts",
-  "main": "lib/main.js",
-  "module": "lib/main.module.js",
-  "unpkg": "lib/main.umd.js",
+  "main": "lib/main.cjs",
+  "exports": {
+    "require": "./lib/main.cjs",
+    "default": "./lib/main.js"
+  },
   "typings": "lib/main.d.ts",
   "scripts": {
     "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
-    "build": "rimraf lib && microbundle --raw",
+    "build": "rimraf lib && microbundle --raw --no-pkg-main -o lib/main.cjs -f cjs && microbundle --raw --no-pkg-main -o lib/main.js -f modern",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
     "test": "eslint . && jest --no-cache",
-    "watch": "microbundle watch"
+    "watch": "microbundle watch --raw --no-pkg-main -o lib/main.js -f modern"
   },
   "repository": {
     "type": "git",
@@ -42,60 +45,19 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^26.0.14",
-    "@types/react": "^16.9.52",
+    "@types/jest": "^26.0.23",
+    "@types/react": "^17.0.8",
     "@types/rimraf": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
-    "@whitetrefoil/eslint-config": "^0.14.0",
-    "eslint": "^7.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "@whitetrefoil/eslint-config": "^0.20.1",
+    "eslint": "^7.27.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^26.5.3",
-    "microbundle": "^0.12.4",
-    "preact": "^10.5.4",
+    "jest": "^27.0.3",
+    "microbundle": "^0.13.1",
+    "preact": "^10.5.13",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{ts,js}",
-      "!**/*.d.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/~.*"
-    ],
-    "coverageDirectory": "test_results/jest",
-    "coverageReporters": [
-      "clover",
-      "lcov",
-      "text-summary"
-    ],
-    "globals": {
-      "ts-jest": {
-        "babelConfig": true,
-        "tsConfig": "tests/tsconfig.json"
-      }
-    },
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "moduleNameMapper": {
-      "^~/(.*)$": "<rootDir>/src/$1"
-    },
-    "preset": "ts-jest",
-    "reporters": [
-      "default"
-    ],
-    "setupFiles": [],
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/setup.ts"
-    ],
-    "testMatch": null,
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
-    "transformIgnorePatterns": []
+    "ts-jest": "^27.0.1",
+    "typescript": "^4.3.2"
   }
 }
