@@ -62,6 +62,10 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 Changelog & Roadmap
 -------------------
 
+### v0.4.1
+
+* Fix build scripts & changelog.
+
 ### v0.4.0
 
 * Upgrade infrastructure & migrate to ESM.
