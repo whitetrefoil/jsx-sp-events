@@ -62,6 +62,11 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 Changelog & Roadmap
 -------------------
 
+### v0.5.0
+
+* fix: Cannot guess event target type in pure preact;
+* infra!: upgrade infrastructure & dependencies;
+
 ### v0.4.1
 
 * Fix build scripts & changelog.
