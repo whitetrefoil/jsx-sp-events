@@ -1,27 +1,31 @@
-interface Preventable<T> {
+interface Preventable {
   preventDefault: (...args: any[]) => void
-  currentTarget: T
 }
 
-interface Stoppable<T> {
+interface Stoppable {
   stopPropagation: (...args: any[]) => void
+}
+
+interface Targeted<T = unknown> {
   currentTarget: T
 }
 
-type Handler<T, E extends Preventable<T>|Stoppable<T>> = (this: T, ev: E) => void
+type PHandler<T = unknown> = (ev: Preventable&Targeted<T>) => void
+type SHandler<T = unknown> = (ev: Stoppable&Targeted<T>) => void
+type SPHandler<T = unknown> = (ev: Stoppable&Preventable&Targeted<T>) => void
 
 
-export function prevented<T, E extends Preventable<T>>(evOrHandler: E): void
-export function prevented<T, E extends Preventable<T>>(evOrHandler?: Handler<T, E>): Handler<T, E>
-export function prevented<T, E extends Preventable<T>>(evOrHandler?: E|Handler<T, E>): Handler<T, E>|void {
+export function prevented(evOrHandler: Preventable): void
+export function prevented<T = unknown>(evOrHandler?: PHandler<T>): PHandler<T>
+export function prevented<T = unknown>(evOrHandler?: Preventable|PHandler<T>): PHandler<T>|void {
   if (evOrHandler == null) {
-    return (ev: E) => {
+    return (ev: Preventable) => {
       ev.preventDefault()
     }
   }
 
   if (typeof evOrHandler === 'function') {
-    return (ev: E) => {
+    return (ev: Preventable&Targeted<T>) => {
       ev.preventDefault()
       evOrHandler.call(ev.currentTarget, ev)
     }
@@ -34,17 +38,17 @@ export function prevented<T, E extends Preventable<T>>(evOrHandler?: E|Handler<T
 export const p = prevented
 
 
-export function stopped<T, E extends Stoppable<T>>(evOrHandler: E): void
-export function stopped<T, E extends Stoppable<T>>(evOrHandler?: Handler<T, E>): Handler<T, E>
-export function stopped<T, E extends Stoppable<T>>(evOrHandler?: E|Handler<T, E>): Handler<T, E>|void {
+export function stopped(evOrHandler: Stoppable): void
+export function stopped<T = unknown>(evOrHandler?: SHandler<T>): SHandler<T>
+export function stopped<T = unknown>(evOrHandler?: Stoppable|SHandler<T>): SHandler<T>|void {
   if (evOrHandler == null) {
-    return (ev: E) => {
+    return (ev: Stoppable) => {
       ev.stopPropagation()
     }
   }
 
   if (typeof evOrHandler === 'function') {
-    return (ev: E) => {
+    return (ev: Stoppable&Targeted<T>) => {
       ev.stopPropagation()
       evOrHandler.call(ev.currentTarget, ev)
     }
@@ -57,29 +61,29 @@ export function stopped<T, E extends Stoppable<T>>(evOrHandler?: E|Handler<T, E>
 export const s = stopped
 
 
-export function preventedAndStopped<T, E extends Preventable<T>&Stoppable<T>>(evOrHandler: E): void
-export function preventedAndStopped<T, E extends Preventable<T>&Stoppable<T>>(evOrHandler?: Handler<T, E>): Handler<T, E>
-export function preventedAndStopped<T, E extends Preventable<T>&Stoppable<T>>(evOrHandler?: E|Handler<T, E>): Handler<T, E>|void {
+export function stoppedAndPrevented(evOrHandler: Stoppable&Preventable): void
+export function stoppedAndPrevented<T = unknown>(evOrHandler?: SPHandler<T>): SPHandler<T>
+export function stoppedAndPrevented<T = unknown>(evOrHandler?: (Stoppable&Preventable)|SPHandler<T>): SPHandler<T>|void {
   if (evOrHandler == null) {
-    return (ev: E) => {
-      ev.preventDefault()
+    return (ev: Stoppable&Preventable) => {
       ev.stopPropagation()
+      ev.preventDefault()
     }
   }
 
   if (typeof evOrHandler === 'function') {
-    return (ev: E) => {
-      ev.preventDefault()
+    return (ev: Stoppable&Preventable&Targeted<T>) => {
       ev.stopPropagation()
+      ev.preventDefault()
       evOrHandler.call(ev.currentTarget, ev)
     }
   }
 
-  evOrHandler.preventDefault()
   evOrHandler.stopPropagation()
+  evOrHandler.preventDefault()
   return undefined
 }
 
-export const stoppedAndPrevented = preventedAndStopped
-export const ps = preventedAndStopped
-export const sp = preventedAndStopped
+export const preventedAndStopped = stoppedAndPrevented
+export const ps = stoppedAndPrevented
+export const sp = stoppedAndPrevented
