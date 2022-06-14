@@ -8,15 +8,12 @@ An event helper because React decides to ban using of "javascript:".
 Usage
 ---------
 
-**IMPORTANT**: If your code isn't targeting the latest syntax spec of JS / ES,
-please use something like babel to transfer this library.
+This package is an ESM, cannot be used directly as a CJS module.
 
 ### Typescript
 
 ```jsx
 import { prevented, stopped, preventedAndStopped } from '@whitetrefoil/jsx-sp-events';
-// Or below if no module system
-const { prevented, stopped, preventedAndStopped } = require('@whitetrefoil/jsx-sp-events');
 ```
 
 ### Common
@@ -25,7 +22,7 @@ const { prevented, stopped, preventedAndStopped } = require('@whitetrefoil/jsx-s
 export default () => {
     const dispatch = useDispatch();
     const onClick = () => dispatch(myAction());
-    return <a href="#" onClick="prevented(onClick)">Click Me!</a>
+    return <a href="#" onClick={prevented(onClick)}>Click Me!</a>
 }
 ```
 
@@ -61,6 +58,10 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 
 Changelog & Roadmap
 -------------------
+
+### v0.7.0
+
+* Upgrade to typescript 3.7 & built to a real ESM.
 
 ### v0.6.0
 
