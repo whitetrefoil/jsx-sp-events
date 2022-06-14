@@ -15,18 +15,21 @@
   ],
   "type": "module",
   "source": "src/main.ts",
-  "main": "lib/main.cjs",
+  "types": "lib/main.d.ts",
+  "main": "lib/main.js",
   "exports": {
-    "require": "./lib/main.cjs",
-    "default": "./lib/main.js"
+    ".": {
+      "types": "./lib/main.d.ts",
+      "default": "./lib/main.js"
+    }
   },
-  "typings": "lib/main.d.ts",
   "scripts": {
-    "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
-    "build": "rimraf lib && microbundle --raw --no-pkg-main -o lib/main.cjs -f cjs && microbundle --raw --no-pkg-main -o lib/main.js -f modern",
+    "prepublishOnly": "npm run build",
+    "build": "rimraf lib && microbundle --raw --no-pkg-main -f modern -o lib/main.js --tsconfig src/tsconfig.json",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
-    "test": "eslint . && jest --no-cache",
-    "watch": "microbundle watch --raw --no-pkg-main -o lib/main.js -f modern"
+    "test": "rimraf test_results && eslint . ; jest --no-cache",
+    "test-ci": "rimraf test_results && eslint -o test_results/eslint/junit.xml -f junit . ; jest -i --no-cache",
+    "watch": "microbundle watch --raw --no-pkg-main -f modern -o lib/main.js"
   },
   "repository": {
     "type": "git",
@@ -38,25 +41,29 @@
     "test": "tests"
   },
   "engines": {
-    "node": ">=12.19.0"
+    "node": ">=14.8"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.3",
-    "@types/react": "^17.0.36",
+    "@types/jest": "^28.1.1",
+    "@types/react": "^18.0.12",
     "@types/rimraf": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
-    "@whitetrefoil/eslint-config": "^0.22.0",
-    "eslint": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "@whitetrefoil/eslint-config": "^0.27.0",
+    "eslint": "^8.17.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^27.3.1",
-    "microbundle": "^0.14.2",
-    "preact": "^10.5.15",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
+    "jest-junit": "^13.2.0",
+    "microbundle": "^0.15.0",
+    "preact": "^10.7.3",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.7",
-    "typescript": "^4.5.2"
-  }
+    "ts-jest": "^28.0.5",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "packageManager": "yarn@3.2.1"
 }

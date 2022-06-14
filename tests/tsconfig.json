@@ -1,13 +1,8 @@
 {
-  "extends"        : "../tsconfig.json",
-  "compilerOptions": {
-    "noEmit": true,
-    "outDir": "./.building"
-  },
+  "extends"        : "../src/tsconfig.json",
   "include"        : [
-    "../declarations/**/*.d.ts",
-    "../Gulpfile.js",
-    "../src/**/*.ts",
-    "**/*.ts"
+    "../declarations/**/*",
+    "../src/**/*",
+    "**/*"
   ]
 }

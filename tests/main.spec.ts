@@ -1,4 +1,4 @@
-import { p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented } from '~/main'
+import { p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented } from '~/main.js'
 
 it('should pass', () => {
   expect(true).toBe(true)
