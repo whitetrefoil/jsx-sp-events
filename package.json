@@ -1,6 +1,6 @@
 {
   "name": "@whitetrefoil/jsx-sp-events",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "A tiny helper to reduce codes about ev.preventDefault() & ev.stopPropagation()",
   "keywords": [
     "jsx",
