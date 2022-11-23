@@ -1,9 +1,7 @@
 JSX SP Events (@whitetrefoil/jsx-sp-events)
 ==================================================
 
-An event helper because React decides to ban using of "javascript:".
-
-"S" for "event.stopPropagation()", "P" for "event.preventDefault()".
+A tiny helper to reduce codes about "S"(`ev.stopPropagation()`) & "P"(`ev.preventDefault()`).
 
 Usage
 ---------
@@ -33,7 +31,7 @@ API
 
 Alias: `p`
 
-`onClick={prevented}` is same as `onClick={prevented()}` means
+`onClick={prevented}` or `onClick={prevented()}` means
 `onClick={ev => ev.preventDefault()}`;
 
 `onClick={prevented(myHandler)}` means
@@ -58,6 +56,12 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 
 Changelog & Roadmap
 -------------------
+
+### v0.8.0
+
+* Infra upgrades;
+* TS def of `this`;
+* Funcs w/ no params will return a stable handler function;
 
 ### v0.7.0
 
