@@ -1,7 +1,7 @@
 {
   "name": "@whitetrefoil/jsx-sp-events",
-  "version": "0.7.0",
-  "description": "A event helper because React decides to ban using of \"javascript:\"",
+  "version": "0.8.0",
+  "description": "A tiny helper to reduce codes about ev.preventDefault() & ev.stopPropagation()",
   "keywords": [
     "jsx",
     "events",
@@ -24,12 +24,11 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "rimraf lib && microbundle --raw --no-pkg-main -f modern -o lib/main.js --tsconfig src/tsconfig.json",
+    "prepack": "yarn build",
+    "build": "tsc -p src/tsconfig.json --noEmit false --sourceMap false",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
     "test": "rimraf test_results && eslint . ; jest --no-cache",
-    "test-ci": "rimraf test_results && eslint -o test_results/eslint/junit.xml -f junit . ; jest -i --no-cache",
-    "watch": "microbundle watch --raw --no-pkg-main -f modern -o lib/main.js"
+    "watch": "yarn build -w"
   },
   "repository": {
     "type": "git",
@@ -37,9 +36,6 @@
   },
   "author": "WhiteTrefoil <whitetrefoil@gmail.com>",
   "license": "Unlicense",
-  "directories": {
-    "test": "tests"
-  },
   "engines": {
     "node": ">=14.8"
   },
@@ -47,23 +43,20 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.1",
-    "@types/react": "^18.0.12",
+    "@types/jest": "^29.2.3",
+    "@types/react": "^18.0.25",
     "@types/rimraf": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.28.0",
-    "@typescript-eslint/parser": "^5.28.0",
-    "@whitetrefoil/eslint-config": "^0.27.0",
-    "eslint": "^8.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "@whitetrefoil/eslint-config": "^0.31.0",
+    "eslint": "^8.28.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^28.1.1",
-    "jest-environment-jsdom": "^28.1.1",
-    "jest-junit": "^13.2.0",
-    "microbundle": "^0.15.0",
-    "preact": "^10.7.3",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^28.0.5",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.3"
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.3.0"
 }

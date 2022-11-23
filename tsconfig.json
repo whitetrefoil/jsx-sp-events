@@ -5,9 +5,9 @@
     "emitDecoratorMetadata"         : true,
     "esModuleInterop"               : true,
     "experimentalDecorators"        : true,
+    "importHelpers"                 : true,
     "importsNotUsedAsValues"        : "error",
-    "inlineSourceMap"               : false,
-    "inlineSources"                 : false,
+    "isolatedModules"               : true,
     "module"                        : "Node16",
     "moduleResolution"              : "Node16",
     "noEmit"                        : true,
@@ -24,13 +24,14 @@
     "target"                        : "ESNext"
   },
   "include"        : [
-    "declarations/**/*",
-    "./*"
+    "declarations/*.ts",
+    "*.ts"
   ],
   "exclude"        : [
-    "scripts/**/*.cjs",
-    "**/node_modules",
-    "**/.*",
-    "**/~*"
-  ]
+    "node_modules"
+  ],
+  "ts-node"        : {
+    "esm"          : true,
+    "transpileOnly": true
+  }
 }

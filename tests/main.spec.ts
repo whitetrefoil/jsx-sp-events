@@ -1,4 +1,5 @@
-import { p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented } from '~/main.js'
+import {p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented} from '../src/main.js'
+
 
 it('should pass', () => {
   expect(true).toBe(true)
@@ -19,7 +20,7 @@ describe('prevented', () => {
   test('as wrapper', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = prevented(e => undefined)
     handler(ev)
@@ -29,7 +30,7 @@ describe('prevented', () => {
   test('as fn', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = prevented()
     handler(ev)
@@ -39,7 +40,7 @@ describe('prevented', () => {
   test('as value', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = prevented
     handler(ev)
@@ -51,7 +52,7 @@ describe('p', () => {
   test('as wrapper', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = p(e => undefined)
     handler(ev)
@@ -61,7 +62,7 @@ describe('p', () => {
   test('as fn', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = p()
     handler(ev)
@@ -71,7 +72,7 @@ describe('p', () => {
   test('as value', () => {
     const ev = {
       preventDefault: jest.fn(),
-      currentTarget: undefined,
+      currentTarget : undefined,
     }
     const handler = p
     handler(ev)
@@ -83,7 +84,7 @@ describe('stopped', () => {
   test('as wrapper', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stopped(e => undefined)
     handler(ev)
@@ -93,7 +94,7 @@ describe('stopped', () => {
   test('as fn', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stopped()
     handler(ev)
@@ -103,7 +104,7 @@ describe('stopped', () => {
   test('as value', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stopped
     handler(ev)
@@ -115,7 +116,7 @@ describe('s', () => {
   test('as wrapper', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = s(e => undefined)
     handler(ev)
@@ -125,7 +126,7 @@ describe('s', () => {
   test('as fn', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = s()
     handler(ev)
@@ -135,7 +136,7 @@ describe('s', () => {
   test('as value', () => {
     const ev = {
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = s
     handler(ev)
@@ -146,9 +147,9 @@ describe('s', () => {
 describe('preventedAndStopped', () => {
   test('as wrapper', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = preventedAndStopped(e => undefined)
     handler(ev)
@@ -158,9 +159,9 @@ describe('preventedAndStopped', () => {
 
   test('as fn', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = preventedAndStopped()
     handler(ev)
@@ -170,9 +171,9 @@ describe('preventedAndStopped', () => {
 
   test('as value', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = preventedAndStopped
     handler(ev)
@@ -184,9 +185,9 @@ describe('preventedAndStopped', () => {
 describe('stoppedAndPrevented', () => {
   test('as wrapper', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stoppedAndPrevented(e => undefined)
     handler(ev)
@@ -196,9 +197,9 @@ describe('stoppedAndPrevented', () => {
 
   test('as fn', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stoppedAndPrevented()
     handler(ev)
@@ -208,9 +209,9 @@ describe('stoppedAndPrevented', () => {
 
   test('as value', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = stoppedAndPrevented
     handler(ev)
@@ -222,9 +223,9 @@ describe('stoppedAndPrevented', () => {
 describe('sp', () => {
   test('as wrapper', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = sp(e => undefined)
     handler(ev)
@@ -234,9 +235,9 @@ describe('sp', () => {
 
   test('as fn', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = sp()
     handler(ev)
@@ -246,9 +247,9 @@ describe('sp', () => {
 
   test('as value', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = sp
     handler(ev)
@@ -260,9 +261,9 @@ describe('sp', () => {
 describe('ps', () => {
   test('as wrapper', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = ps(e => undefined)
     handler(ev)
@@ -272,9 +273,9 @@ describe('ps', () => {
 
   test('as fn', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = ps()
     handler(ev)
@@ -284,9 +285,9 @@ describe('ps', () => {
 
   test('as value', () => {
     const ev = {
-      preventDefault: jest.fn(),
+      preventDefault : jest.fn(),
       stopPropagation: jest.fn(),
-      currentTarget: undefined,
+      currentTarget  : undefined,
     }
     const handler = ps
     handler(ev)

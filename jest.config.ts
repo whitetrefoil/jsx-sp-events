@@ -1,4 +1,5 @@
-import type { Config } from '@jest/types'
+import type {Config} from '@jest/types'
+
 
 const config: Config.InitialOptions = {
   collectCoverage           : true,
@@ -15,13 +16,6 @@ const config: Config.InitialOptions = {
     'lcov',
     'text-summary',
   ],
-  globals                   : {
-    'ts-jest': {
-      tsconfig   : 'tests/tsconfig.json',
-      babelConfig: false,
-      useESM     : true,
-    },
-  },
   moduleFileExtensions      : [
     'jsx',
     'js',
@@ -36,7 +30,6 @@ const config: Config.InitialOptions = {
     '^~/(.*)\\.js$'                                                                      : '<rootDir>/src/$1',
     '^~/(.*)$'                                                                           : '<rootDir>/src/$1',
   },
-  preset                    : 'ts-jest',
   reporters                 : [
     'default',
     [
@@ -49,16 +42,19 @@ const config: Config.InitialOptions = {
       },
     ],
   ],
-  setupFiles                : [
-    // 'core-js/stable',
-    // 'regenerator-runtime/runtime',
-    // 'jest-localstorage-mock',
-  ],
-  setupFilesAfterEnv        : [
-    '<rootDir>/tests/setup.ts',
-  ],
-  // testEnvironment           : 'jest-environment-jsdom-global',
+  setupFiles                : [],
+  setupFilesAfterEnv        : [],
+  testEnvironment           : '',
   testRegex                 : '(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+  transform                 : {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        isolatedModules: true,
+        useESM         : true,
+      },
+    ],
+  },
   transformIgnorePatterns   : [
     '<rootDir>/node_modules/(?!vue)',
   ],
