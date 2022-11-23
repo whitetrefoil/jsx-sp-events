@@ -1,6 +1,6 @@
 {
   "name": "@whitetrefoil/jsx-sp-events",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A tiny helper to reduce codes about ev.preventDefault() & ev.stopPropagation()",
   "keywords": [
     "jsx",
@@ -25,10 +25,10 @@
   },
   "scripts": {
     "prepack": "yarn build",
-    "build": "tsc -p src/tsconfig.json --noEmit false --sourceMap false",
+    "build": "tsc -p src/tsconfig.json --noEmit false --sourceMap false --inlineSources false",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
     "test": "rimraf test_results && eslint . ; jest --no-cache",
-    "watch": "yarn build -w"
+    "watch": "tsc -p src/tsconfig.json --noEmit false -w"
   },
   "repository": {
     "type": "git",
