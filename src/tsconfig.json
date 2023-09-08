@@ -1,17 +1,11 @@
 {
   "extends"        : "../tsconfig.json",
   "compilerOptions": {
-    "declaration"  : true,
-    "inlineSources": true,
-    "outDir"       : "../lib",
-    "sourceMap"    : true
+    "declaration": true,
+    "outDir"     : "../lib"
   },
   "include"        : [
     "../declarations/*.ts",
     "*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "*.spec.ts"
   ]
 }
