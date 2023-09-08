@@ -1,4 +1,5 @@
 import {p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented} from '../src/main.js'
+import {it, describe, test, expect}                                                 from '@jest/globals'
 
 
 it('should pass', () => {
