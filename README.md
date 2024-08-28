@@ -57,6 +57,14 @@ Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are call
 Changelog & Roadmap
 -------------------
 
+### v0.10.0
+
+* Infra upgrades;
+
+### v0.9.0
+
+* Optimize types;
+
 ### v0.8.0
 
 * Infra upgrades;
