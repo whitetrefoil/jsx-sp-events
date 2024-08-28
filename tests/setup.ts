@@ -1,3 +1,2 @@
-// Test setup codes here
-
+// import '@testing-library/jest-dom/vitest'
 export {}
