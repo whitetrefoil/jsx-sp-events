@@ -1,6 +1,5 @@
-import {fileURLToPath} from 'node:url'
-import {defineConfig} from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import {defineConfig} from 'vitest/config'
 
 
 export default defineConfig({
@@ -11,15 +10,9 @@ export default defineConfig({
   ],
 
   test: {
-    root: fileURLToPath(new URL('.', import.meta.url)),
+    root: '.',
 
-    alias: [{find: /^~\/(.*)/u, replacement: fileURLToPath(new URL('src/$1', import.meta.url))}],
-
-    reporters: ['verbose', 'junit'],
-
-    outputFile: {
-      junit: 'test_results/vitest/junit.xml',
-    },
+    reporters: ['verbose'],
 
     restoreMocks: true,
 
@@ -27,11 +20,7 @@ export default defineConfig({
       enabled         : true,
       include         : ['src/**'],
       reportsDirectory: 'test_results/vitest',
-      reporter        : [
-        ['text'],
-        ['clover', {file: 'clover.xml'}],
-        ['lcov'],
-      ],
+      reporter        : [['text'], ['html-spa']],
     },
 
     typecheck: {
