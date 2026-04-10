@@ -274,7 +274,29 @@ typings/
 !.yarn/versions
 
 
+### Customized IDEA files
+.idea/*
+!.idea/codeStyles
+!.idea/inspectionProfiles
+!.idea/runConfigurations
+!.idea/.gitignore
+!.idea/compiler.xml
+!.idea/encodings.xml
+!.idea/modules.xml
+
+
+### oh-my-openagent
+/.playwright-mcp/
+/.sisyphus/
+/playwright-*.yml
+/task-*-preview.png
+
+
 ### Project specific files
 ~*
-test_results/
+_*
+dist/
+docs/
 lib/
+test_results/
+auto-imports.d.ts
