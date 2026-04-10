@@ -8,6 +8,8 @@ Usage
 
 This package is an ESM, cannot be used directly as a CJS module.
 
+The published package intentionally keeps `src/` and `tests/` so consumers can inspect the reference implementation and executable examples.
+
 ### Typescript
 
 ```jsx
@@ -34,6 +36,8 @@ Alias: `p`
 `onClick={prevented}` or `onClick={prevented()}` means
 `onClick={ev => ev.preventDefault()}`;
 
+Only omitting the argument is supported for this form. `undefined` is treated as "no handler provided"; `null` is not.
+
 `onClick={prevented(myHandler)}` means
 ```
 onClick={ev => {
@@ -42,17 +46,23 @@ onClick={ev => {
 }}
 ```
 
+The wrapped handler always receives the original event object, and `this` is bound to `ev.currentTarget`.
+
 ### `stopped`
 
 Alias: `s`
 
 Same as `prevented` but `ev.stopPropagation()` is called instead of `ev.preventDefault()`.
 
+The same argument rule applies here: omit the argument or pass a handler; `null` is not treated as an empty call.
+
 ### `preventedAndStopped`
 
 Aliases: `stoppedAndPrevented`, `ps`, `sp`
 
 Same as above but both `ev.stopPropagation()` and `ev.preventDefault()` are called.
+
+As with the other helpers, only `undefined` means "no handler provided".
 
 Changelog & Roadmap
 -------------------

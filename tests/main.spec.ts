@@ -1,322 +1,211 @@
-import {describe, expect, it, test, vi} from 'vitest'
-import {p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented} from '~/main.js'
+import {describe, expect, test, vi} from 'vitest'
+import {p, prevented, preventedAndStopped, ps, s, sp, stopped, stoppedAndPrevented} from '#/main.js'
+import type {Handler, PEvent, SEvent, SPEvent} from '#/main.js'
 
+interface Target {
+  id: string
+}
 
-it('should pass', () => {
-  expect(true).toBe(true)
-})
+interface PreventableEvent {
+  preventDefault: (...args: unknown[]) => void
+  currentTarget: Target
+}
 
-it('should be a function', () => {
-  expect(typeof prevented).toBe('function')
-  expect(typeof p).toBe('function')
-  expect(typeof stopped).toBe('function')
-  expect(typeof s).toBe('function')
-  expect(typeof preventedAndStopped).toBe('function')
-  expect(typeof stoppedAndPrevented).toBe('function')
-  expect(typeof sp).toBe('function')
-  expect(typeof ps).toBe('function')
+interface StoppableEvent {
+  stopPropagation: (...args: unknown[]) => void
+  currentTarget: Target
+}
+
+type PreventableStoppableEvent = PreventableEvent & StoppableEvent
+
+function createPreventableEvent() {
+  const preventDefault = vi.fn()
+
+  return {
+    ev: {
+      preventDefault,
+      currentTarget: {id: 'target'},
+    } satisfies PreventableEvent,
+    preventDefault,
+  }
+}
+
+function createStoppableEvent() {
+  const stopPropagation = vi.fn()
+
+  return {
+    ev: {
+      stopPropagation,
+      currentTarget: {id: 'target'},
+    } satisfies StoppableEvent,
+    stopPropagation,
+  }
+}
+
+function createPreventableStoppableEvent() {
+  const preventable = createPreventableEvent()
+  const stoppable = createStoppableEvent()
+
+  return {
+    ev: {
+      ...preventable.ev,
+      ...stoppable.ev,
+    } satisfies PreventableStoppableEvent,
+    preventDefault : preventable.preventDefault,
+    stopPropagation: stoppable.stopPropagation,
+  }
+}
+
+describe('aliases', () => {
+  test('export the same callable helpers', () => {
+    expect(p).toBe(prevented)
+    expect(s).toBe(stopped)
+    expect(preventedAndStopped).toBe(stoppedAndPrevented)
+    expect(ps).toBe(stoppedAndPrevented)
+    expect(sp).toBe(stoppedAndPrevented)
+  })
 })
 
 describe('prevented', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
-    }
-
-    const handler = prevented(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
+  test('returns a stable handler when omitted', () => {
+    expect(prevented()).toBe(prevented())
   })
 
-  test('as fn', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
-    }
+  test('works as a direct event handler', () => {
+    const {ev, preventDefault} = createPreventableEvent()
 
-    const handler = prevented()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
+    prevented(ev)
+
+    expect(preventDefault).toHaveBeenCalledTimes(1)
   })
 
-  test('as value', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
+  test('wraps a handler with preventDefault, original event, and currentTarget binding', () => {
+    const events: string[] = []
+    const {ev, preventDefault} = createPreventableEvent()
+    let handlerCalls = 0
+
+    const handler: Handler<PEvent<Target>> = function(this: unknown, receivedEvent): void {
+      handlerCalls += 1
+      events.push('handler')
+
+      expect(this).toBe(ev.currentTarget)
+      expect(receivedEvent).toBe(ev)
     }
 
-    const handler = prevented
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-  })
-})
+    preventDefault.mockImplementation(() => {
+      events.push('preventDefault')
+    })
 
-describe('p', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
-    }
+    const wrappedHandler: (ev: PEvent<Target>) => void = prevented<Target>(handler)
 
-    const handler = p(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-  })
+    wrappedHandler(ev)
 
-  test('as fn', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
-    }
-
-    const handler = p()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
+    expect(preventDefault).toHaveBeenCalledTimes(1)
+    expect(handlerCalls).toBe(1)
+    expect(events).toEqual(['preventDefault', 'handler'])
   })
 
-  test('as value', () => {
-    const ev = {
-      preventDefault: vi.fn(),
-      currentTarget : undefined,
-    }
-
-    const handler = p
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
+  test('rejects null because only undefined means no argument', () => {
+    expect(() => {
+      prevented(null as never)
+    }).toThrow(TypeError)
   })
 })
 
 describe('stopped', () => {
-  test('as wrapper', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = stopped(e => undefined)
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
+  test('returns a stable handler when omitted', () => {
+    expect(stopped()).toBe(stopped())
   })
 
-  test('as fn', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
+  test('works as a direct event handler', () => {
+    const {ev, stopPropagation} = createStoppableEvent()
 
-    const handler = stopped()
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
+    stopped(ev)
+
+    expect(stopPropagation).toHaveBeenCalledTimes(1)
   })
 
-  test('as value', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
+  test('wraps a handler with stopPropagation, original event, and currentTarget binding', () => {
+    const events: string[] = []
+    const {ev, stopPropagation} = createStoppableEvent()
+    let handlerCalls = 0
+
+    const handler: Handler<SEvent<Target>> = function(this: unknown, receivedEvent): void {
+      handlerCalls += 1
+      events.push('handler')
+
+      expect(this).toBe(ev.currentTarget)
+      expect(receivedEvent).toBe(ev)
     }
 
-    const handler = stopped
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-})
+    stopPropagation.mockImplementation(() => {
+      events.push('stopPropagation')
+    })
 
-describe('s', () => {
-  test('as wrapper', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
+    const wrappedHandler: (ev: SEvent<Target>) => void = stopped<Target>(handler)
 
-    const handler = s(e => undefined)
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
+    wrappedHandler(ev)
 
-  test('as fn', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = s()
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
+    expect(stopPropagation).toHaveBeenCalledTimes(1)
+    expect(handlerCalls).toBe(1)
+    expect(events).toEqual(['stopPropagation', 'handler'])
   })
 
-  test('as value', () => {
-    const ev = {
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = s
-    handler(ev)
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-})
-
-describe('preventedAndStopped', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = preventedAndStopped(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-
-  test('as fn', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = preventedAndStopped()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-
-  test('as value', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = preventedAndStopped
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
+  test('rejects null because only undefined means no argument', () => {
+    expect(() => {
+      stopped(null as never)
+    }).toThrow(TypeError)
   })
 })
 
 describe('stoppedAndPrevented', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = stoppedAndPrevented(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
+  test('returns a stable handler when omitted', () => {
+    expect(stoppedAndPrevented()).toBe(stoppedAndPrevented())
   })
 
-  test('as fn', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
+  test('works as a direct event handler', () => {
+    const {ev, preventDefault, stopPropagation} = createPreventableStoppableEvent()
 
-    const handler = stoppedAndPrevented()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
+    stoppedAndPrevented(ev)
+
+    expect(stopPropagation).toHaveBeenCalledTimes(1)
+    expect(preventDefault).toHaveBeenCalledTimes(1)
   })
 
-  test('as value', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
+  test('wraps a handler with both event side effects, original event, and currentTarget binding', () => {
+    const events: string[] = []
+    const {ev, preventDefault, stopPropagation} = createPreventableStoppableEvent()
+    let handlerCalls = 0
+
+    const handler: Handler<SPEvent<Target>> = function(this: unknown, receivedEvent): void {
+      handlerCalls += 1
+      events.push('handler')
+
+      expect(this).toBe(ev.currentTarget)
+      expect(receivedEvent).toBe(ev)
     }
 
-    const handler = stoppedAndPrevented
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-})
+    stopPropagation.mockImplementation(() => {
+      events.push('stopPropagation')
+    })
 
-describe('sp', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
+    preventDefault.mockImplementation(() => {
+      events.push('preventDefault')
+    })
 
-    const handler = sp(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
+    const wrappedHandler: (ev: SPEvent<Target>) => void = stoppedAndPrevented<Target>(handler)
 
-  test('as fn', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
+    wrappedHandler(ev)
 
-    const handler = sp()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
+    expect(stopPropagation).toHaveBeenCalledTimes(1)
+    expect(preventDefault).toHaveBeenCalledTimes(1)
+    expect(handlerCalls).toBe(1)
+    expect(events).toEqual(['stopPropagation', 'preventDefault', 'handler'])
   })
 
-  test('as value', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = sp
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-})
-
-describe('ps', () => {
-  test('as wrapper', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = ps(e => undefined)
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-
-  test('as fn', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = ps()
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
-  })
-
-  test('as value', () => {
-    const ev = {
-      preventDefault : vi.fn(),
-      stopPropagation: vi.fn(),
-      currentTarget  : undefined,
-    }
-
-    const handler = ps
-    handler(ev)
-    expect(ev.preventDefault).toHaveBeenCalled()
-    expect(ev.stopPropagation).toHaveBeenCalled()
+  test('rejects null because only undefined means no argument', () => {
+    expect(() => {
+      stoppedAndPrevented(null as never)
+    }).toThrow(TypeError)
   })
 })

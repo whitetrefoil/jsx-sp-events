@@ -51,7 +51,7 @@ export function stopped(evOrHandler: Stoppable): void
 export function stopped<T>(evOrHandler?: Handler<SEvent<T>>): Handler<SEvent<T>, T>
 
 export function stopped<T>(evOrHandler?: Stoppable|Handler<SEvent<T>>): Handler<SEvent<T>, T>|void {
-  if (evOrHandler == null) {
+  if (evOrHandler === undefined) {
     return _stopped
   }
 
@@ -78,7 +78,7 @@ export function stoppedAndPrevented(evOrHandler: Stoppable&Preventable): void
 export function stoppedAndPrevented<T>(evOrHandler?: Handler<SPEvent<T>>): Handler<SPEvent<T>, T>
 
 export function stoppedAndPrevented<T>(evOrHandler?: (Stoppable&Preventable)|Handler<SPEvent<T>>): Handler<SPEvent<T>, T>|void {
-  if (evOrHandler == null) {
+  if (evOrHandler === undefined) {
     return _stoppedAndPrevented
   }
 

@@ -288,6 +288,7 @@ typings/
 ### oh-my-openagent
 /.playwright-mcp/
 /.sisyphus/
+/.reviews/
 /playwright-*.yml
 /task-*-preview.png
 
